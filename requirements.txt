@@ -1,0 +1,6 @@
+Flask==1.1.2
+Flask-RESTful==0.3.8
+fastapi==0.90.0
+fastjsonschema==2.15.1
+uvicorn==0.20.0
+censys==2.1.9

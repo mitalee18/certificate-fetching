@@ -1,0 +1,1 @@
+web: gunicorn solution_2:app
