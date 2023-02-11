@@ -16,7 +16,7 @@ with open('censys_io_certificates_solution1.csv', 'w', newline='') as csvfile:
     for result in c.search(
         "parsed.names:censys.io and tags: trusted",
         fields=fields,
-        max_records=100, #can change this value, but maximum records being returned are 458
+        max_records=100 #can change this value, but maximum records being returned are 458
     ):
         writer.writerow({'sha256_fingerprint': result['parsed.fingerprint_sha256'],
                          'validity_start': result['parsed.validity.start'],
