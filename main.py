@@ -1,9 +1,11 @@
-#using fastapi
+#using fastapi - solution 3
 
 #creating a public api to call censys api
 from fastapi import FastAPI
 from censys.search import CensysCertificates
-import uvicorn
+import pandas as pd
+from fastapi.responses import StreamingResponse
+import io
 
 app = FastAPI()
 
@@ -14,6 +16,14 @@ fields = [
     "parsed.validity.end",
 ]
 
+@app.route("/")
+def hello():
+    return '''
+        <html><body>
+        <a href="/certificates">Click me to download csv.</a>
+        </body></html>
+        '''
+
 @app.get("/certificates")
 async def get_certificates(): #using async def because we need to wait for response from censys
 
@@ -21,13 +31,28 @@ async def get_certificates(): #using async def because we need to wait for respo
         "parsed.names:censys.io and tags: trusted",
         fields=fields
     )
-    
+    certificate = []
     #convert the results to a list of dictionaries
-    certificates = [{
-        'SHA256': result['parsed.fingerprint_sha256'],
-        'Validity Start': result['parsed.validity.start'],
-        'Validity End': result['parsed.validity.end']
-    } for result in results]
+    for result in results:
+        sha256_fingerprint = result['parsed.fingerprint_sha256']
+        validity_start = result['parsed.validity.start']
+        validity_end = result['parsed.validity.end']
+
+        certificate.append([sha256_fingerprint, validity_start, validity_end])
     
-    #return the results as JSON
-    return certificates
+
+    #adding df column names
+    df = pd.DataFrame(certificate, columns=["sha256_fingerprint", "validity_start", "validity_end"])
+    
+    #convert dataframe to csv
+    stream = io.StringIO()
+    df.to_csv(stream, index = False)
+
+    response = StreamingResponse(iter([stream.getvalue()]),
+                            media_type="text/csv"
+       )
+
+    
+    response.headers["Content-Disposition"] = "attachment; filename=censys_io_certificates_solution3.csv"
+
+    return response

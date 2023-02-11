@@ -16,14 +16,6 @@ fields = [
     "parsed.validity.end",
 ]
 
-@app.route("/")
-def hello():
-    return '''
-        <html><body>
-        <a href="/get">Click me to download csv.</a>
-        </body></html>
-        '''
-
 class certificate(Resource):
     def get(self):
 
@@ -44,12 +36,12 @@ class certificate(Resource):
         df = pd.DataFrame(certificate, columns=["sha256_fingerprint", "validity_start", "validity_end"])
 
         #convert dataframe to csv
-        df.to_csv("censys_io_certificates.csv", index=False)
+        df.to_csv("censys_io_certificates_solution2.csv", index=False)
 
         return send_file(
-            'censys_io_certificates.csv',
+            'censys_io_certificates_solution2.csv',
             mimetype='text/csv',
-            attachment_filename='censys_io_certificates.csv',
+            attachment_filename='censys_io_certificates_solution2.csv',
             as_attachment=True
         )
 

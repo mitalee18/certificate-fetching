@@ -4,3 +4,4 @@ fastapi==0.90.0
 fastjsonschema==2.15.1
 uvicorn==0.20.0
 censys==2.1.9
+pandas== 1.5.1

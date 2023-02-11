@@ -8,7 +8,7 @@ fields = [
     "parsed.validity.end",
 ]
 
-with open('certificates.csv', 'w', newline='') as csvfile:
+with open('censys_io_certificates_solution1.csv', 'w', newline='') as csvfile:
     fieldnames = ['sha256_fingerprint', 'validity_start', 'validity_end']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
