@@ -39,6 +39,8 @@ pip install -r requirements.txt
 
 4. Run the script:\
 There are 3 solutions for this application, run each one in the directory where the dependencies are installed\
+
+
 Solution 1
 ```bash
 python solution_1.py
