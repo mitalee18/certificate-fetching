@@ -59,6 +59,8 @@ uvicorn main:app --reload
 ```
 This solution creats a fastAPI running on `http://127.0.0.1:8000/certificate` downloads the csv file directly
 
+Solution 2 and 3 both are calling an internal package fetch.py which calls censys search api. This was done to follow DRY principle
+
 ## Configuration
 You can modify the following parameters in the script to customize the query and the output:
 

@@ -3,35 +3,18 @@ from flask import Flask, send_file
 from flask_restful import Api, Resource
 from censys.search import CensysCertificates
 import pandas as pd
-
+import fetch
 
 app = Flask(__name__)
 api = Api(app)
 
-c = CensysCertificates()
-
-fields = [
-    "parsed.fingerprint_sha256",
-    "parsed.validity.start",
-    "parsed.validity.end",
-]
 
 class certificate(Resource):
     def get(self):
 
-        results = c.search(
-            "parsed.names:censys.io and tags: trusted",
-            fields=fields)
-        
-        certificate = []
-        # Convert the results to a list of dictionaries and add to dataframe
-        for result in results:
-            sha256_fingerprint = result['parsed.fingerprint_sha256']
-            validity_start = result['parsed.validity.start']
-            validity_end = result['parsed.validity.end']
+        #callin fetch.py to get search result
+        certificate = fetch.search()
 
-            certificate.append([sha256_fingerprint, validity_start, validity_end])
-        
         #adding df column names
         df = pd.DataFrame(certificate, columns=["sha256_fingerprint", "validity_start", "validity_end"])
 
